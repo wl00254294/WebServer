@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>[[${name}]] Home</title>
+</head>
+<body>
+<div>
+<span th:text="${@Test.mytest('eric')}" />
+</div>
+<div th:each="mapS:${mylist}">
+ <div th:text="${mapS}"></div>
+</div>
+
+</body>
+</html>

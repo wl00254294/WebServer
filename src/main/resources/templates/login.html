@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Please Login First</title>
+		<link type="text/css" media="all"  th:href="@{/css/bootstrap.css}"  rel="stylesheet"></link>
+		<link type="text/css" media="all"  th:href="@{/css/app.css}" rel="stylesheet"></link>
+		<link type="text/css" media="all"  th:href="@{/css/font-awesome.css}" rel="stylesheet"></link>
+	</head>
+
+	<body>
+		<div id="mainWrapper">
+			<div class="login-container">
+				<div class="login-card">
+					<div class="login-form">
+						<form name="f" th:action="@{/login}"  method="POST"  class="form-horizontal">
+						
+					
+						 <div th:if="${param.error} != null" >
+								<div class="alert alert-danger">
+									<p>Invaoid username or password</p>
+								</div>
+						</div>
+							
+						<div th:if="${param.logout != null}" class="alert alert-success">
+								
+								  <p>Success Logout</p>
+						</div>
+							
+							<div class="input-group input-sm">
+								<label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
+								<input type="text" class="form-control" id="username" name="username" placeholder="USERNAME" required>
+							</div>
+							<div class="input-group input-sm">
+								<label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label> 
+								<input type="password" class="form-control" id="password" name="password" placeholder="PASSWORD" required>
+							</div>			
+							<!--	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+							<div class="form-actions">
+								<input type="submit"
+									class="btn btn-block btn-primary btn-default" value="Login">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

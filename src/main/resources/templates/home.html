@@ -1,0 +1,71 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${name}]] Home</title>
+    <link type="text/css" media="all" href="/CDC/static/css/bootstrap.css" th:href="@{/static/css/bootstrap.css}"  rel="stylesheet"></link>
+	<link type="text/css" media="all" href="/CDC/static/css/font-awesome.css" th:href="@{/static/css/font-awesome.css}" rel="stylesheet"></link>
+    <script type="text/javascript" src="/CDC/static/js/yui.min.js" th:src="@{/static/js/yui.min.js}"></script>
+
+</head>
+<body class="yui3-skin-sam">
+
+<div>
+<a th:href="@{/views/download}" >Download Log</a> 
+</div>
+<div>
+ <form  th:action="@{/views/adduser}"  method="POST" >
+   <label for="username"></label>
+    <input type="text"  id="username" name="username" placeholder="USERNAME" required>
+    <label for="password"></label>
+    <input type="text"  id="password" name="password" placeholder="PASSWORD" required>
+    <label for="role"></label>
+    <input type="text"  id="role" name="role" placeholder="ROLE" required>
+    
+    <input type="submit" value="Add">
+ </form>
+</div>
+
+
+<div style="text-align:center;width:1200px;height:600px;">
+　<div  id="jobcontent" style="width:1000px;height:400px;margin:0 auto;"></div>
+</div>
+
+
+<script th:inline="javascript">
+
+var jobs = /*[[${jobs}]]*/ ''; 
+var contact = JSON.parse(jobs);
+
+YUI().use(['datatable-sort','datatable-paginator','node','gallery-datatable-selection'], function(Y) {
+    var cols = [
+        {key:"tokenid", label:"Token ID"},
+        {key:"user", label:"USER"},
+        {key:"update_dt", label:"UPDATE_DATE"}
+    ];
+    
+    var data = contact;
+    
+    table = new Y.DataTable({
+        columns: cols,
+        data   : data,
+		sortable: true,
+		selectionMode: 'row',
+		rowsPerPage: 4,
+        pageSizes: [ 4, 'Show All' ]
+    }).render("#jobcontent");
+    
+    
+    
+});
+</script>
+    <!-- 
+    <div>
+   <form th:action="@{/views/getUserInfo}" method="post">
+      <label for="id">id</label>:
+      <input type="text" id="id" name="id"  /> <br />
+      <input type="submit" value="Click" />
+    </form>
+	</div>
+	 --> 
+</body>
+</html>
