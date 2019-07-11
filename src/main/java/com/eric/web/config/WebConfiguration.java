@@ -34,14 +34,16 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 	                "/js/**",
 	                "/fonts/**",
 	                "/less/**",
-	                "/scss/**")
+	                "/scss/**",
+	                "/webfonts/**")
 	                .addResourceLocations(
 	                        "classpath:/static/img/",
 	                        "classpath:/static/css/",
 	                        "classpath:/static/js/",
 	                        "classpath:/static/fonts/",
 	                        "classpath:/static/less/",
-	                        "classpath:/static/scss/");
+	                        "classpath:/static/scss/",
+	                        "classpath:/static/webfonts/");
 		  
 		  
 	    
@@ -55,6 +57,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 	        		"/js/**",
 	        		"/fonts/**",
 	                "/less/**",
-	                "/scss/**");
+	                "/scss/**",
+	                "/webfonts/**");
 	    }
 }

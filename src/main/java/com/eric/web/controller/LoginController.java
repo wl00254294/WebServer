@@ -21,15 +21,32 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		return "test.html";
+	}
+
+	@RequestMapping(value = "/init", method = RequestMethod.GET)
+	public String init(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		return "init.html";
+	}
+
 	//forward to home page
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String User(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+	public String home(HttpServletRequest request,Model model,HttpSession session) throws Exception {
 		logger.info("susses login to home page");
 		String username=(String) session.getAttribute("USERNAME");
 		
-		model.addAttribute("username", username);
+		List<String> list=new ArrayList<String>();
 		
-		return "home.html";
+		list.add("x1");
+		list.add("x2");
+		list.add("x3");
+		
+		model.addAttribute("username", username);
+		model.addAttribute("mylist", list);
+		
+		return "index.html";
 		
 	}
 	

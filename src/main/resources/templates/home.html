@@ -2,16 +2,33 @@
 <head>
     <meta charset="UTF-8">
     <title>[[${username}]] Home</title>
-    <link type="text/css" media="all" th:href="@{/css/bootstrap.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"  rel="stylesheet"></link>
 	<link type="text/css" media="all" th:href="@{/css/font-awesome.css}" rel="stylesheet"></link>
     <script type="text/javascript" th:src="@{/js/angular.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/home.agl.js}"></script>
+	
+<script th:inline="javascript">
+var memId=[[${mylist}]];
 
+
+</script>
 </head>
-<body ng-app>
+<body>
 
-<p>Your name：</p>  
-    <p><input id="name" ng-model="name" type="text"></p>  
- <h1>{{ "Hello 33" + name }}</h1> 
+<div  ng-app="homeapp" ng-controller="MainCtrl" ng-init="getMember(memId)" >
+
+  <button ng-click="myclick(0)" >click init</button>
+  <button ng-click="myclick(1)" >click test</button>
+ 
+  <select ng-model="template" ng-options="t.name for t in templates">
+   <option value="">(blank)</option>
+  </select>
+  url of the template: <code>{{template.url}}</code>
+  <hr/>
+  <div >
+    <div ng-include="template.url"></div>
+  </div>
+</div>
 
 
 <script th:inline="javascript">
