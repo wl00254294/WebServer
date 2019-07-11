@@ -9,7 +9,7 @@ import com.eric.web.method.Test;
 
 //install bean for com.eric.web.method package,use by html file call function
 @Configuration
-@ComponentScan(basePackages = "com.example.demo")
+@ComponentScan(basePackages = "com.eric.web")
 public class ThymeleafCall {
 	  @Bean(name="Test")
 	  public Test mytest()

@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.example.demo")
+@ComponentScan(basePackages = "com.eric.web")
 public class WebConfiguration extends WebMvcConfigurerAdapter{
 
 	  @Bean  
@@ -42,6 +42,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 	                        "classpath:/static/fonts/",
 	                        "classpath:/static/less/",
 	                        "classpath:/static/scss/");
+		  
+		  
 	    
 	  }  
 	  
