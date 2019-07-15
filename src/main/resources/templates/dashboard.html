@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+    <link type="text/css" media="all" th:href="@{/css/eric.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/fontawesome.min.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/templatemo-style.css}"  rel="stylesheet"></link>
+	
+	<script type="text/javascript" th:src="@{/js/angular.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/home.agl.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/moment.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>   
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tooplate-scripts.js}"></script>
+		
+
+  
+
+</head>
+<body>
+ <div class="row tm-content-row">
+   <div class="col-12 tm-block-col">
+                    <div  ng-app='homeapp' ng-controller="DashboardCtrl" class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
+                        <h2 class="tm-block-title">通知</h2>
+                        <div class="tm-notification-items">
+                        	 <div ng-repeat="notify in notifys" ng-class="media tm-notification-item">
+                                <div class="media-body">
+                                    <p class="mb-2"><b>{{notify.plateform}}</b>  {{notify.message}}</p>
+                                    <span class="tm-small tm-text-color-secondary">{{notify.transdate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-app='homeapp' ng-controller="DashboardCtrl" class="col-12 tm-block-col" >
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                        <h2 class="tm-block-title">近一個月交易紀錄</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ORDER NO.</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">OPERATORS</th>
+                                    <th scope="col">LOCATION</th>
+                                    <th scope="col">DISTANCE</th>
+                                    <th scope="col">START DATE</th>
+                                    <th scope="col">EST DELIVERY DUE</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                               <tr ng-repeat="x in orders">
+                                    <th scope="row"><b>{{x.orderno}}</b></th>
+                                    <td>
+                                        <div ng-class="x.state == 'Finish' ? 'tm-status-circle moving' :(x.state == 'Pend'? 'tm-status-circle pending':'tm-status-circle cancelled')">
+                                        </div>{{x.state}}
+                                    </td>
+                                    <td><b>{{x.operator}}</b></td>
+                                    <td><b>{{x.locate}}</b></td>
+                                    <td><b>{{x.distance}}</b></td>
+                                    <td>{{x.sdt}}</td>
+                                    <td>{{x.due}}</td>
+                                </tr>							
+                            </tbody>
+                        </table>
+                    </div>
+   </div>
+</div>
+</body>
+</html>

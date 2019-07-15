@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eric.web.bo.NotifyInfo;
+import com.eric.web.bo.TranscationInfo;
+
 @Controller
 public class LoginController {
 private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -26,9 +29,13 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		return "test.html";
 	}
 
-	@RequestMapping(value = "/init", method = RequestMethod.GET)
-	public String init(HttpServletRequest request,Model model,HttpSession session) throws Exception {
-		return "init.html";
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+	public String dashboard(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		
+	
+		
+		
+		return "dashboard.html";
 	}
 
 	//forward to home page
@@ -37,14 +44,47 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		logger.info("susses login to home page");
 		String username=(String) session.getAttribute("USERNAME");
 		
-		List<String> list=new ArrayList<String>();
 		
-		list.add("x1");
-		list.add("x2");
-		list.add("x3");
+		List<TranscationInfo> list=new ArrayList<TranscationInfo>();
+		List<NotifyInfo> list2=new ArrayList<NotifyInfo>();
+        
+		//test data for transcation
+		for(int i=0;i<4;i++)
+		{
+			TranscationInfo tif=new TranscationInfo();
+			tif.setOrderno("#1234");
+			if(i==0)
+			{
+			 tif.setState("Finish");
+			}else if(i==1)
+			{
+				tif.setState("Pend");
+			}else
+			{
+				tif.setState("Cancle");
+			}
+			tif.setOperator("Eric Wu");
+			tif.setLocate("Tawian");
+			tif.setDistance(Integer.toString((i+1)*10)+ " km");
+			tif.setSdt("2019-01-01");
+			tif.setDue("2019-08-09");
+			list.add(tif);
+		}
+		model.addAttribute("orders", list);			
+
+		//test data for notification
+		for(int i=0;i<5;i++)
+		{
+			NotifyInfo notify=new NotifyInfo();
+			notify.setPlateform("Plateform"+Integer.toString((i+1)));
+			notify.setMessage("You receive message from "+ Integer.toString(i+1));
+			notify.setTransdate("2018-07-15");
+			list2.add(notify);
+		}
 		
+		model.addAttribute("notifys", list2);
 		model.addAttribute("username", username);
-		model.addAttribute("mylist", list);
+		
 		
 		return "index.html";
 		
@@ -63,7 +103,7 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 			@RequestParam("username") String username,
 			@RequestParam("password") String password) {
 		   
-		if("admin".equals(username) && "admin".equals(password))
+		if(("admin".equals(username) || "eric".equals(username)) && "admin".equals(password))
 		{
 			session.setAttribute("USERNAME",username);
 			
@@ -89,5 +129,12 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		  model.setViewName("redirect:/login?error");
 	      return model;
 	}	
-
+	
+	
+	@RequestMapping(value = "/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+       
+        return "redirect:login?logout";
+    }
 }

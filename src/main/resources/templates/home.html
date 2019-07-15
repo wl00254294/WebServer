@@ -15,10 +15,10 @@ var memId=[[${mylist}]];
 </head>
 <body>
 
-<div  ng-app="homeapp" ng-controller="MainCtrl" ng-init="getMember(memId)" >
+<div  ng-app="homeapp" ng-controller="MainCtrl"  >
 
-  <button ng-click="myclick(0)" >click init</button>
-  <button ng-click="myclick(1)" >click test</button>
+  <button ng-click="loadpage(0)" >click init</button>
+  <button ng-click="loadpage(1)" >click test</button>
  
   <select ng-model="template" ng-options="t.name for t in templates">
    <option value="">(blank)</option>
