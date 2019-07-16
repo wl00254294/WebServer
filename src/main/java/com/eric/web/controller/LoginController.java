@@ -29,6 +29,16 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		return "test.html";
 	}
 
+	@RequestMapping(value = "/weekreport", method = RequestMethod.GET)
+	public String report(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		
+	
+		
+		
+		return "report_week.html";
+	}
+	
+	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard(HttpServletRequest request,Model model,HttpSession session) throws Exception {
 		

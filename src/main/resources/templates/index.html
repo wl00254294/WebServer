@@ -18,11 +18,12 @@
     <script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>   
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/tooplate-scripts.js}"></script>
+	<script type="text/javascript" th:src="@{/js/d3.v3.min.js}"></script>
+	 
 	
 	<script th:inline="javascript">
 		var orders=[[${orders}]];
 		var notifys=[[${notifys}]];
-
 	</script>
 
 </head>
@@ -39,18 +40,17 @@
                     <i class="fas fa-bars tm-nav-icon"></i>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-init="flag=0">
                     <ul class="navbar-nav mx-auto h-100">
                         <li class="nav-item">
-                            <a class="nav-link active" ng-click="loadpage(0)">
+                            <a ng-class="flag == 0 ? 'nav-link active' : 'nav-link'" ng-click="flag=0;loadpage(flag)"  href="#">
                                 <i class="fas fa-tachometer-alt"></i>
                                 Dashboard
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            <a ng-class="flag >= 1 && flag<=3 ? 'nav-link dropdown-toggle active' : 'nav-link dropdown-toggle'" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-file-alt"></i>
                                 <span>
@@ -58,11 +58,11 @@
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" ng-click="loadpage(1)">Daily Report</a>
-                                <a class="dropdown-item" href="#">Weekly Report</a>
-                                <a class="dropdown-item" href="#">Yearly Report</a>
+                                <a class="dropdown-item" ng-click="flag=1;loadpage(flag)" href="#">Weekly Report</a>
+                                <a class="dropdown-item" ng-click="flag=2;loadpage(flag)" href="#">Monthly Report</a>
+                                <a class="dropdown-item" ng-click="flag=3;loadpage(flag)" href="#">Cost Report</a>
                             </div>
-                        </li>
+                        </li>						
                         <li class="nav-item">
                             <a class="nav-link" href="products.html">
                                 <i class="fas fa-shopping-cart"></i>
@@ -70,8 +70,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="accounts.html">
+                       <li class="nav-item">
+                            <a ng-class="flag == 2 ? 'nav-link active' : 'nav-link'" ng-click="flag=2;loadpage(flag)" href="#">
                                 <i class="far fa-user"></i>
                                 Accounts
                             </a>
@@ -132,31 +132,7 @@
     </div>
 
 
-    <script>
-        Chart.defaults.global.defaultFontColor = 'white';
-        let ctxLine,
-            ctxBar,
-            ctxPie,
-            optionsLine,
-            optionsBar,
-            optionsPie,
-            configLine,
-            configBar,
-            configPie,
-            lineChart;
-        barChart, pieChart;
-        // DOM is ready
-        $(function () {
-            drawLineChart(); // Line Chart
-            drawBarChart(); // Bar Chart
-            drawPieChart(); // Pie Chart
 
-            $(window).resize(function () {
-                updateLineChart();
-                updateBarChart();                
-            });
-        })
-    </script>
 </body>
 
 </html>
