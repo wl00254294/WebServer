@@ -24,6 +24,7 @@
 	<script th:inline="javascript">
 		var orders=[[${orders}]];
 		var notifys=[[${notifys}]];
+		var weekdata=[[${weekdata}]];
 	</script>
 
 </head>
@@ -50,7 +51,7 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a ng-class="flag >= 1 && flag<=3 ? 'nav-link dropdown-toggle active' : 'nav-link dropdown-toggle'" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            <a ng-class="flag >= 1 && flag <= 3 ? 'nav-link dropdown-toggle active' : 'nav-link dropdown-toggle'" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-file-alt"></i>
                                 <span>
@@ -71,7 +72,7 @@
                         </li>
 
                        <li class="nav-item">
-                            <a ng-class="flag == 2 ? 'nav-link active' : 'nav-link'" ng-click="flag=2;loadpage(flag)" href="#">
+                            <a ng-class="flag == 5 ? 'nav-link active' : 'nav-link'" ng-click="flag=5;loadpage(flag)" href="#">
                                 <i class="far fa-user"></i>
                                 Accounts
                             </a>

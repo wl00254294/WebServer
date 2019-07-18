@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eric.web.bo.Data;
 import com.eric.web.bo.NotifyInfo;
 import com.eric.web.bo.TranscationInfo;
+import com.eric.web.bo.WeekData;
 
 @Controller
 public class LoginController {
@@ -30,14 +32,22 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 
 	@RequestMapping(value = "/weekreport", method = RequestMethod.GET)
-	public String report(HttpServletRequest request,Model model,HttpSession session) throws Exception {
-		
-	
-		
+	public String dreport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
 		
 		return "report_week.html";
 	}
 	
+	@RequestMapping(value = "/monthreport", method = RequestMethod.GET)
+	public String mreport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		
+		return "report_month.html";
+	}	
+	
+	@RequestMapping(value = "/costreport", method = RequestMethod.GET)
+	public String creport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		
+		return "report_cost.html";
+	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard(HttpServletRequest request,Model model,HttpSession session) throws Exception {
@@ -57,6 +67,35 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		
 		List<TranscationInfo> list=new ArrayList<TranscationInfo>();
 		List<NotifyInfo> list2=new ArrayList<NotifyInfo>();
+		List<WeekData> list3 =new ArrayList<WeekData>();
+		
+		//test data for week report
+		for(int i=0;i<6;i++)
+		{
+			
+			WeekData week=new WeekData();
+			List<Data> k=new ArrayList<Data>();
+			for(int j=0;j<2;j++)
+			{
+				Data tmp=new Data();
+				if(j==0)
+				{
+					tmp.setValue((j+i+1)*10);
+					tmp.setRate("This Week");
+				}else{
+					tmp.setValue((j+i+1)*10);
+					tmp.setRate("Last Week");					
+				}
+				k.add(tmp);
+			}
+			
+			week.setValues(k);
+			week.setCategorie("Plate"+Integer.toString((i+1)));
+			list3.add(week);
+			
+		}
+		model.addAttribute("weekdata", list3);	
+		
         
 		//test data for transcation
 		for(int i=0;i<4;i++)
