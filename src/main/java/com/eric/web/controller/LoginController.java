@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eric.web.bo.Data;
+import com.eric.web.bo.MonthData;
 import com.eric.web.bo.NotifyInfo;
 import com.eric.web.bo.TranscationInfo;
 import com.eric.web.bo.WeekData;
@@ -46,6 +47,15 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	@RequestMapping(value = "/costreport", method = RequestMethod.GET)
 	public String creport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
 		
+		List<String> plates=new ArrayList<String>();
+		plates.add("Plate1");
+		plates.add("Plate2");
+		plates.add("Plate3");
+		plates.add("Plate4");
+		plates.add("Plate5");
+		plates.add("Plate6");
+		
+		model.addAttribute("myplates", plates);
 		return "report_cost.html";
 	}
 	
@@ -68,6 +78,34 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		List<TranscationInfo> list=new ArrayList<TranscationInfo>();
 		List<NotifyInfo> list2=new ArrayList<NotifyInfo>();
 		List<WeekData> list3 =new ArrayList<WeekData>();
+		List<MonthData> list4 =new ArrayList<MonthData>();
+		
+		//test data for month report
+		for(int i=0;i<6;i++)
+		{
+			
+			MonthData month=new MonthData();
+			List<Data> k=new ArrayList<Data>();
+			for(int j=0;j<2;j++)
+			{
+				Data tmp=new Data();
+				if(j==0)
+				{
+					tmp.setValue((j+i+1)*10);
+					tmp.setRate("This Month");
+				}else{
+					tmp.setValue((j+i+1)*10);
+					tmp.setRate("Last Month");					
+				}
+				k.add(tmp);
+			}
+			
+			month.setValues(k);
+			month.setCategorie("Plate"+Integer.toString((i+1)));
+			list4.add(month);
+			
+		}
+		model.addAttribute("monthdata", list4);	
 		
 		//test data for week report
 		for(int i=0;i<6;i++)

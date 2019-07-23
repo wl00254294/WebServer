@@ -19,7 +19,8 @@
     .x.axis path {
     display: none;
     }    
-    
+ 
+
     </style>
 </head>
 
@@ -27,8 +28,34 @@
 <body ng-app='homeapp' >
 
 <div ng-controller="ReportCtrl">
-<div id="report" ng-init="report_cost()"> </div>
+
+<div ng-repeat="plate in platenames" ng-init="report_cost(plate)" >
+
+<!--  
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" ng-style="{ 'float' : ($index%2 == 0) ? 'left' : 'right' }">
+        <div class="tm-bg-primary-dark tm-block" >
+            <h2 class="tm-block-title">{{plate}} is {{$index}}</h2>
+            <div id={{plate}} ></div>
+           
+        </div>
+    </div>
+ -->
+ 	
 </div>
+
+<div class="row tm-content-row">
+<div th:each="myplate,myplateStat : ${myplates}" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" th:style="(${myplateStat.index}%2) == 0 ? 'float:left' : 'float:right'">
+  
+  <div class="tm-bg-primary-dark tm-block" >
+  	 <h2 class="tm-block-title">[[${myplate}]] [[${myplateStat.index}]] </h2>
+ 	 <div th:id="${myplate}"> </div>
+  </div>
+</div>
+</div>
+
+
+</div>
+
 
 </body>
 </html>

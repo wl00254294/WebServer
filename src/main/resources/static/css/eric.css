@@ -118,3 +118,16 @@
   height: 50px;
   border-radius: 50%;
 }
+
+.reportleft {
+  float:left;
+}
+
+.reportcenter {
+  display: inline-block;
+  margin:0 auto;
+}
+
+.reportright {
+  float:right;
+}   
