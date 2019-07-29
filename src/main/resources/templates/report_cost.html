@@ -29,17 +29,9 @@
 
 <div ng-controller="ReportCtrl">
 
-<div ng-repeat="plate in platenames" ng-init="report_cost(plate)" >
+<input type="button" value="click" ng-click="$log.info('sssss')">
 
-<!--  
-    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" ng-style="{ 'float' : ($index%2 == 0) ? 'left' : 'right' }">
-        <div class="tm-bg-primary-dark tm-block" >
-            <h2 class="tm-block-title">{{plate}} is {{$index}}</h2>
-            <div id={{plate}} ></div>
-           
-        </div>
-    </div>
- -->
+<div ng-repeat="plate in platenames" ng-init="report_cost(plate)" >
  	
 </div>
 

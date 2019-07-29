@@ -28,16 +28,20 @@ app.controller('DashboardCtrl', ['$scope', '$window', function($scope, $window) 
 }]);
 
 //report.html
-app.controller('ReportCtrl', ['$scope', '$window', function($scope, $window) {
+app.controller('ReportCtrl', ['$scope','$log', function($scope,$log) {
 	
 	  $scope.platenames=['Plate1','Plate2','Plate3','Plate4','Plate5','Plate6'];
-	  
+	  $scope.$log = $log;
 	   	
 	  $scope.report_cost=function(name)
 	  {
 		  
+		  
+		  //$scope.$log.log(name);
 		 
 		  var dataset=[{"id":"1","map":"tw","count":530,"badge":73,"name_tw":"\u53f0\u7063","name_cn":"\u53f0\u6e7e\u9ad8\u6821","name_jp":"\u53f0\u6e7e\u9ad8\u6821","name_en":"Taiwan"},{"id":"2","map":"hk","zoom":"11","zoom_m":"11","count":426,"badge":20,"name_tw":"\u9999\u6e2f","name_cn":"\u9999\u6e2f","name_jp":"\u9999\u6e2f","name_en":"Hong Kong","lng":"114.154602","lat":"22.354245"},{"id":"3","map":"jr","count":782,"badge":17,"name_tw":"\u53f0\u7063\u570b\u4e2d","name_cn":"\u53f0\u6e7e\u4e2d\u5b66","name_jp":"\u53f0\u6e7e\u4e2d\u5b66","name_en":"Taiwan Junior High School"},{"id":"4","map":"my","count":203,"badge":41,"name_tw":"\u99ac\u4f86\u897f\u4e9e","name_cn":"\u9a6c\u6765\u897f\u4e9a","name_jp":"\u30de\u30ec\u30fc\u30b7\u30a2","name_en":"Malysia"},{"id":"5","map":"bn","count":18,"badge":50,"name_tw":"\u6c76\u840a","name_cn":"\u6587\u83b1","name_jp":"\u30d6\u30eb\u30cd\u30a4","name_en":"Brunei"},{"id":"6","map":"sg","count":63,"badge":65,"name_tw":"\u65b0\u52a0\u5761","name_cn":"\u65b0\u52a0\u5761","name_jp":"\u30b7\u30f3\u30ac\u30dd\u30fc\u30eb","name_en":"Singapore","lng":"103.806496","lat":"1.349736"},{"id":"7","map":"mo","count":43,"badge":70,"name_tw":"\u6fb3\u9580","name_cn":"\u6fb3\u95e8","name_jp":"\u30de\u30ab\u30aa","name_en":"Macau"},{"id":"8","map":"id","count":21,"badge":71,"name_tw":"\u5370\u5c3c","name_cn":"\u5370\u5c3c","name_jp":"\u30a4\u30f3\u30c9\u30cd\u30b7\u30a2","name_en":"Indonesia"}]   
+		  
+		 
 		  
 		//Width and height   
 		      var w = 600;   

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,30 +24,97 @@ import com.eric.web.bo.MonthData;
 import com.eric.web.bo.NotifyInfo;
 import com.eric.web.bo.TranscationInfo;
 import com.eric.web.bo.WeekData;
+import com.eric.web.method.JacksonUtil;
+import com.eric.web.method.RestClient;
 
 @Controller
+@PropertySource("classpath:production.properties")
 public class LoginController {
-private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	@Value("${middleserver}")
+    private String middleserver;
+
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+		
+		RestClient cli=new RestClient();
+		JacksonUtil jt=new JacksonUtil();
+		
+		//post method
+		Data data=new Data();
+		data.setRate("1.12");
+		data.setValue(100);		
+		String pdata=jt.bean2Json(data);		
+		String pout=cli.post(middleserver, "test", pdata);
+		
+		
+		model.addAttribute("out", pout);
+		
 		return "test.html";
 	}
 
 	@RequestMapping(value = "/weekreport", method = RequestMethod.GET)
-	public String dreport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
-		
+	public String dreport(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			
+      
+			
 		return "report_week.html";
 	}
 	
 	@RequestMapping(value = "/monthreport", method = RequestMethod.GET)
-	public String mreport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
-		
+	public String mreport(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			
+      		
 		return "report_month.html";
 	}	
 	
 	@RequestMapping(value = "/costreport", method = RequestMethod.GET)
-	public String creport(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+	public String creport(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			
+      
 		
 		List<String> plates=new ArrayList<String>();
 		plates.add("Plate1");
@@ -60,8 +129,23 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dashboard(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+	public String dashboard(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
 		
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			
 	
 		
 		
@@ -70,12 +154,28 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 
 	//forward to home page
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+	public String home(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
 		logger.info("susses login to home page");
 		String username=(String) session.getAttribute("USERNAME");
 		
 		
-		List<TranscationInfo> list=new ArrayList<TranscationInfo>();
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			
+	
+
 		List<NotifyInfo> list2=new ArrayList<NotifyInfo>();
 		List<WeekData> list3 =new ArrayList<WeekData>();
 		List<MonthData> list4 =new ArrayList<MonthData>();
@@ -134,42 +234,31 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 		}
 		model.addAttribute("weekdata", list3);	
 		
-        
-		//test data for transcation
-		for(int i=0;i<4;i++)
+		
+		//Get Dashboard Data
+		RestClient cli=new RestClient();
+		JacksonUtil ju=new JacksonUtil();
+		try {
+			String repdata=cli.post(middleserver, "getTransInfo", username);
+		
+			List<TranscationInfo> orders=ju.json2BeanList(repdata,TranscationInfo.class );
+		
+			model.addAttribute("orders", orders);			
+		}catch(Exception e)
 		{
-			TranscationInfo tif=new TranscationInfo();
-			tif.setOrderno("#1234");
-			if(i==0)
-			{
-			 tif.setState("Finish");
-			}else if(i==1)
-			{
-				tif.setState("Pend");
-			}else
-			{
-				tif.setState("Cancle");
-			}
-			tif.setOperator("Eric Wu");
-			tif.setLocate("Tawian");
-			tif.setDistance(Integer.toString((i+1)*10)+ " km");
-			tif.setSdt("2019-01-01");
-			tif.setDue("2019-08-09");
-			list.add(tif);
-		}
-		model.addAttribute("orders", list);			
-
-		//test data for notification
-		for(int i=0;i<5;i++)
-		{
-			NotifyInfo notify=new NotifyInfo();
-			notify.setPlateform("Plateform"+Integer.toString((i+1)));
-			notify.setMessage("You receive message from "+ Integer.toString(i+1));
-			notify.setTransdate("2018-07-15");
-			list2.add(notify);
+			logger.info("=====error calling getTransInfo====");
 		}
 		
-		model.addAttribute("notifys", list2);
+		
+		try{
+			String repdata=cli.post(middleserver, "getNoteInfo", username);
+			List<NotifyInfo> notifys=ju.json2BeanList(repdata,NotifyInfo.class );
+			model.addAttribute("notifys", notifys);
+		}catch(Exception e)
+		{
+			logger.info("=====error calling getNoteInfo====");
+		}
+		
 		model.addAttribute("username", username);
 		
 		
@@ -202,14 +291,14 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
         	        if("AWSALB".equals(cookie.getName()))
         	        {
         	        	cookieval = cookie.getValue();
+        	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+        	            response.addCookie(rescookie);
         	        }
         	      
         	    }
             }			
             
             model.setViewName("redirect:/home");
-            Cookie rescookie = new Cookie("AWSALB", cookieval);
-            response.addCookie(rescookie);
 			return model;
 		}
 
@@ -219,9 +308,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginController.cla
 	
 	
 	@RequestMapping(value = "/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session,HttpServletRequest request){
         session.invalidate();
-       
+      
         return "redirect:login?logout";
     }
 }
