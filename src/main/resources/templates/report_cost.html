@@ -22,6 +22,10 @@
  
 
     </style>
+    
+    <script th:inline="javascript">
+		var myplates=[[${myplates}]];
+	</script>
 </head>
 
 
@@ -29,18 +33,17 @@
 
 <div ng-controller="ReportCtrl">
 
-<input type="button" value="click" ng-click="$log.info('sssss')">
 
-<div ng-repeat="plate in platenames" ng-init="report_cost(plate)" >
+<div ng-repeat="plate in platenames" ng-init="report_cost($index)" >
  	
 </div>
 
-<div class="row tm-content-row">
-<div th:each="myplate,myplateStat : ${myplates}" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" th:style="(${myplateStat.index}%2) == 0 ? 'float:left' : 'float:right'">
+<div class="row tm-content-row" th:each="plateset : ${param.plates}">
+<div th:each="plate,plateStat : ${#strings.arraySplit(plateset, ',')}" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" th:style="(${plateStat.index}%2) == 0 ? 'float:left' : 'float:right'">
   
   <div class="tm-bg-primary-dark tm-block" >
-  	 <h2 class="tm-block-title">[[${myplate}]] [[${myplateStat.index}]] </h2>
- 	 <div th:id="${myplate}"> </div>
+  	 <h2 class="tm-block-title">[[${plate}]] </h2>
+ 	 <div th:id="${plate}"> </div>
   </div>
 </div>
 </div>

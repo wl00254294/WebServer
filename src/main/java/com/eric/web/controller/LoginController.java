@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eric.web.bo.CostData;
 import com.eric.web.bo.Data;
 import com.eric.web.bo.MonthData;
 import com.eric.web.bo.NotifyInfo;
@@ -97,6 +98,8 @@ public class LoginController {
 		return "report_month.html";
 	}	
 	
+	
+	//Cost Report
 	@RequestMapping(value = "/costreport", method = RequestMethod.GET)
 	public String creport(HttpServletRequest request,Model model,HttpSession session
 			,HttpServletResponse response) throws Exception {
@@ -116,15 +119,15 @@ public class LoginController {
         }			
       
 		
-		List<String> plates=new ArrayList<String>();
-		plates.add("Plate1");
-		plates.add("Plate2");
-		plates.add("Plate3");
-		plates.add("Plate4");
-		plates.add("Plate5");
-		plates.add("Plate6");
+		//List<String> plates=new ArrayList<String>();
+		//plates.add("Plate1");
+		//plates.add("Plate2");
+		//plates.add("Plate3");
+		//plates.add("Plate4");
+		//plates.add("Plate5");
+		//plates.add("Plate6");
 		
-		model.addAttribute("myplates", plates);
+		//model.addAttribute("myplates", plates);
 		return "report_cost.html";
 	}
 	
@@ -158,7 +161,8 @@ public class LoginController {
 			,HttpServletResponse response) throws Exception {
 		logger.info("susses login to home page");
 		String username=(String) session.getAttribute("USERNAME");
-		
+		RestClient cli=new RestClient();
+		JacksonUtil ju=new JacksonUtil();		
 		
 	 	String cookieval="";
 		Cookie[] cookies = request.getCookies();
@@ -175,69 +179,62 @@ public class LoginController {
     	    }
         }			
 	
-
-		List<NotifyInfo> list2=new ArrayList<NotifyInfo>();
-		List<WeekData> list3 =new ArrayList<WeekData>();
-		List<MonthData> list4 =new ArrayList<MonthData>();
+        //Get Cost Data
+        
+		try {
+			String scostdata=cli.post(middleserver, "getCostData", username);
+		
+			List<CostData> costdata=ju.json2BeanList(scostdata,CostData.class );
+			if(costdata.size()>0)
+			{
+				 List<String> plates=new ArrayList<String>();
+				 for(int i=0;i<costdata.size();i++)
+				 {
+					 plates.add(costdata.get(i).getPlatename());
+				 }
+				 model.addAttribute("plates", plates);
+				 model.addAttribute("costdata", costdata);
+			}else
+			{
+				logger.info("=====No Cost Data ====");
+			}
+		
+							
+		}catch(Exception e)
+		{
+			logger.error("=====error calling getCostData====");
+		}       
+        
 		
 		//test data for month report
-		for(int i=0;i<6;i++)
+		try {
+			String smonthdata=cli.post(middleserver, "getMonthData", username);
+		
+			List<MonthData> monthdata=ju.json2BeanList(smonthdata,MonthData.class );
+		
+			model.addAttribute("monthdata", monthdata);				
+		}catch(Exception e)
 		{
-			
-			MonthData month=new MonthData();
-			List<Data> k=new ArrayList<Data>();
-			for(int j=0;j<2;j++)
-			{
-				Data tmp=new Data();
-				if(j==0)
-				{
-					tmp.setValue((j+i+1)*10);
-					tmp.setRate("This Month");
-				}else{
-					tmp.setValue((j+i+1)*10);
-					tmp.setRate("Last Month");					
-				}
-				k.add(tmp);
-			}
-			
-			month.setValues(k);
-			month.setCategorie("Plate"+Integer.toString((i+1)));
-			list4.add(month);
-			
+			logger.error("=====error calling getMonthData====");
 		}
-		model.addAttribute("monthdata", list4);	
+		
 		
 		//test data for week report
-		for(int i=0;i<6;i++)
-		{
-			
-			WeekData week=new WeekData();
-			List<Data> k=new ArrayList<Data>();
-			for(int j=0;j<2;j++)
-			{
-				Data tmp=new Data();
-				if(j==0)
-				{
-					tmp.setValue((j+i+1)*10);
-					tmp.setRate("This Week");
-				}else{
-					tmp.setValue((j+i+1)*10);
-					tmp.setRate("Last Week");					
-				}
-				k.add(tmp);
-			}
-			
-			week.setValues(k);
-			week.setCategorie("Plate"+Integer.toString((i+1)));
-			list3.add(week);
-			
-		}
-		model.addAttribute("weekdata", list3);	
+
+		try {
+			String sweekdata=cli.post(middleserver, "getWeekData", username);
 		
+			List<WeekData> weekdata=ju.json2BeanList(sweekdata,WeekData.class );
+		
+			model.addAttribute("weekdata", weekdata);				
+		}catch(Exception e)
+		{
+			logger.error("=====error calling getWeekData====");
+		}
+				
 		
 		//Get Dashboard Data
-		RestClient cli=new RestClient();
-		JacksonUtil ju=new JacksonUtil();
+
 		try {
 			String repdata=cli.post(middleserver, "getTransInfo", username);
 		
