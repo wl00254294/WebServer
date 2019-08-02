@@ -36,8 +36,8 @@
     <div id="home" ng-app='homeapp' ng-controller="MainCtrl">
         <nav class="navbar navbar-expand-xl">
             <div class="container h-100">
-                <a class="navbar-brand" href="index.html">
-                    <h1 class="tm-site-title mb-0">Transation</h1>
+                <a class="navbar-brand" th:href="index">
+                    <h1 class="tm-site-title mb-0">Trsnscation</h1>
                 </a>
                 <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
                         <li class="nav-item">
                             <a ng-class="flag == 0 ? 'nav-link active' : 'nav-link'" ng-click="flag=0;loadpage(flag)"  href="#">
                                 <i class="fas fa-tachometer-alt"></i>
-                                Dashboard
+                                	儀表版
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
@@ -58,26 +58,26 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-file-alt"></i>
                                 <span>
-                                    Reports <i class="fas fa-angle-down"></i>
+                                	    報表 <i class="fas fa-angle-down"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" ng-click="flag=1;loadpage(flag)" href="#">Weekly Report</a>
-                                <a class="dropdown-item" ng-click="flag=2;loadpage(flag)" href="#">Monthly Report</a>
-                                <a class="dropdown-item" ng-click="flag=3;loadpage(flag)" href="#">Cost Report</a>
+                                <a class="dropdown-item" ng-click="flag=1;loadpage(flag)" href="#">週報</a>
+                                <a class="dropdown-item" ng-click="flag=2;loadpage(flag)" href="#">月報</a>
+                                <a class="dropdown-item" ng-click="flag=3;loadpage(flag)" href="#">消費比例</a>
                             </div>
                         </li>						
                         <li class="nav-item">
-                            <a class="nav-link" href="products.html">
-                                <i class="fas fa-shopping-cart"></i>
-                                Products
+                            <a ng-class="flag == 4 ? 'nav-link active' : 'nav-link'" ng-click="flag=4;directHome()" href="#">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                	轉換
                             </a>
                         </li>
 
                        <li class="nav-item">
                             <a ng-class="flag == 5 ? 'nav-link active' : 'nav-link'" ng-click="flag=5;loadpage(flag)" href="#">
                                 <i class="far fa-user"></i>
-                                Accounts
+                                	用戶
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -85,7 +85,7 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cog"></i>
                                 <span>
-                                    Settings <i class="fas fa-angle-down"></i>
+                                    	設定 <i class="fas fa-angle-down"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -115,7 +115,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <p class="text-white mt-5 mb-5">Welcome back, <b>[[${username}]]</b></p>
+                    <p class="text-white mt-5 mb-5">歡迎回來 , <b>[[${username}]]</b></p>
                 </div>
             </div>
             <!-- row -->

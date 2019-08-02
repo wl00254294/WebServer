@@ -25,6 +25,7 @@
     
     <script th:inline="javascript">
 		var myplates=[[${myplates}]];
+		
 	</script>
 </head>
 
@@ -42,8 +43,8 @@
 <div th:each="plate,plateStat : ${#strings.arraySplit(plateset, ',')}" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col" th:style="(${plateStat.index}%2) == 0 ? 'float:left' : 'float:right'">
   
   <div class="tm-bg-primary-dark tm-block" >
-  	 <h2 class="tm-block-title">[[${plate}]] </h2>
- 	 <div th:id="${plate}"> </div>
+  	 <h2 class="tm-block-title" th:id="${plate}">[[${plate}]] </h2>
+ 	 <!--  <div th:id="${plate}"> </div>-->
   </div>
 </div>
 </div>

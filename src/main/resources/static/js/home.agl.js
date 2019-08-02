@@ -9,11 +9,16 @@ app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
 	     { name: 'report_week.html', url: 'weekreport'},
 	     { name: 'report_month.html', url: 'monthreport'},
 	     { name: 'report_cost.html', url: 'costreport'+'?plates='+$scope.plates},
+	     { name: 'none', url: 'translate'},
 	     { name: 'test.html', url: 'test'}];
   $scope.template = $scope.templates[0];
   
   $scope.loadpage = function(id) {
    $scope.template = $scope.templates[id];
+  };
+  
+  $scope.directHome = function() {
+	  $window.location.href='/websrv/home';
   };
     
 }]);
@@ -32,6 +37,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 	
 	  //$scope.platenames=['Plate1','Plate2','Plate3','Plate4','Plate5','Plate6'];
 	  
+	
 	  $scope.platenames=$window.plates;
 	   
 	  $scope.costdata=$window.costdata;
@@ -45,6 +51,14 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 		  var datall=($scope.costdata)[flag];
 		  var dataset=datall.info;
 		 
+		  // sum
+		  var tots = d3.sum(dataset, function(d) { 
+	            return d.count; 
+	        });
+		  
+		  //scale size
+		  var _g1 = d3.format(".2f");
+		  
 		  
 		//Width and height   
 		      var w = 600;   
@@ -69,22 +83,26 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 		            .attr("width", w)   
 		            .attr("height", h);   
 		         
-		      svg.append("g")   
+		      svg.append("g") 
 		  .attr("class", "labels");   
 		      //Set up groups   
-		      var arcs = svg.selectAll("g.arc")   
+		      var arcs = svg.selectAll("g.arc")
 		              .data(pie(dataset))   
 		              .enter()   
 		              .append("g")   
 		              .attr("class", "arc")   
-		              .attr("transform", "translate(" + w/3 + "," + h/2 + ")");   
+		              .attr("transform", "translate(" + w/3 + "," + h/2 + ")")
+		              ;   
 		         
 		      //Draw arc paths   
-		      arcs.append("path")   
+		      arcs.append("path")
+		      	.transition().delay(function(d,i) {
+		    	  return i * 100; }).duration(100)  
 		          .attr("fill", function(d, i) {   
 		            return color(i);   
 		          })   
-		          .attr("d", arc);   
+		          .attr("d", arc)
+		          ;   
 		  
 		          arcs.append("text")   
 		          .attr("x", 240)   
@@ -95,8 +113,9 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 		            return color(i);   
 		          })   
 		          .text(function(d, i) {   
-		            return d.data.name_tw+": "+d.data.count;   
-		          });   
+		            return d.data.name_tw;   
+		          })
+		          .style('font-size','large');   
 		      //Labels   
 		      arcs.append("text")   
 		          .attr("transform", function(d) {   
@@ -108,10 +127,13 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 		          return "translate(" + (x/h * labelr) +  ',' +   
 		             (y/h * labelr) +  ")";    
 		          })   
-		          .attr("class", "pie_text")   
+		          .attr("class", "pie_text")
+		           .attr("fill", function(d, i) {   
+		            return color(i);   
+		          }) 
 		          .attr("text-anchor", "middle")   
 		          .text(function(d, i) {   
-		            return d.data.name_tw;   
+		            return _g1((d.data.count/tots)*100) + '%';   
 		          });  
 	  };
 	
@@ -123,7 +145,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 		    height = 500 - margin.top - margin.bottom;
 
 			var x0 = d3.scale.ordinal()
-		    	.rangeRoundBands([0, width], .1);
+		    	.rangeRoundBands([0, width], .5);
 
 			var x1 = d3.scale.ordinal();
 
@@ -240,7 +262,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 	    height = 500 - margin.top - margin.bottom;
 
 		var x0 = d3.scale.ordinal()
-	    	.rangeRoundBands([0, width], .1);
+	    	.rangeRoundBands([0, width], .5);
 
 		var x1 = d3.scale.ordinal();
 
@@ -254,6 +276,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 
 		var yAxis = d3.svg.axis()
 	    	.scale(y)
+	    	.ticks(10)
 	    	.orient("left");
 
 		var color = d3.scale.ordinal()
@@ -304,6 +327,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 	      .data(function(d) { return d.values; })
 	      .enter().append("rect")
 	      .attr("width", x1.rangeBand())
+	      //.attr("width", 30)
 	      .attr("x", function(d) { return x1(d.rate); })
 	      .style("fill", function(d) { return color(d.rate) })
 	      .attr("y", function(d) { return y(0); })
@@ -337,7 +361,7 @@ app.controller('ReportCtrl', ['$scope','$window', function($scope,$window) {
 	      .style("fill", function(d) { return color(d); });
 
 		legend.append("text")
-	      .attr("x", width - 24)
+	      .attr("x",width - 24)
 	      .attr("y", 9)
 	      .attr("dy", ".35em")
 	      .style("text-anchor", "end")

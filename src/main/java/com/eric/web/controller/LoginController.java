@@ -45,7 +45,7 @@ public class LoginController {
 		//post method
 		Data data=new Data();
 		data.setRate("1.12");
-		data.setValue(100);		
+		data.setValue(200);		
 		String pdata=jt.bean2Json(data);		
 		String pout=cli.post(middleserver, "test", pdata);
 		
@@ -119,22 +119,14 @@ public class LoginController {
         }			
       
 		
-		//List<String> plates=new ArrayList<String>();
-		//plates.add("Plate1");
-		//plates.add("Plate2");
-		//plates.add("Plate3");
-		//plates.add("Plate4");
-		//plates.add("Plate5");
-		//plates.add("Plate6");
-		
-		//model.addAttribute("myplates", plates);
 		return "report_cost.html";
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard(HttpServletRequest request,Model model,HttpSession session
 			,HttpServletResponse response) throws Exception {
-		
+		String username=(String) session.getAttribute("USERNAME");
+				
 	 	String cookieval="";
 		Cookie[] cookies = request.getCookies();
         if(cookies != null) {
@@ -150,7 +142,7 @@ public class LoginController {
     	    }
         }			
 	
-		
+
 		
 		return "dashboard.html";
 	}
@@ -262,6 +254,17 @@ public class LoginController {
 		return "index.html";
 		
 	}
+	
+	//Translate action
+	@RequestMapping(value = "/translate", method = RequestMethod.GET)
+	public String translation(Model model) {		    
+	       
+		
+		return "redirect:home";
+	}
+	
+	
+	
 	
 	//forward to login page
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
