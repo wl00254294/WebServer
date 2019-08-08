@@ -255,12 +255,28 @@ public class LoginController {
 		
 	}
 	
-	//Translate action
+	//Translate page
 	@RequestMapping(value = "/translate", method = RequestMethod.GET)
-	public String translation(Model model) {		    
-	       
+	public String translation(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) {		    
+		String username=(String) session.getAttribute("USERNAME");
 		
-		return "redirect:home";
+	 	String cookieval="";
+		Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+    	    for(Cookie cookie : cookies) {
+    	    	//get AWS Application Load Balance Cookie(Stick session)
+    	        if("AWSALB".equals(cookie.getName()))
+    	        {
+    	        	cookieval = cookie.getValue();
+    	            Cookie rescookie = new Cookie("AWSALB", cookieval);
+    	            response.addCookie(rescookie);
+    	        }
+    	      
+    	    }
+        }			       
+		
+		return "translate.html";
 	}
 	
 	

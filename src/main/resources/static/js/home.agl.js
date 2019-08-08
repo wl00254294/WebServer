@@ -9,7 +9,7 @@ app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
 	     { name: 'report_week.html', url: 'weekreport'},
 	     { name: 'report_month.html', url: 'monthreport'},
 	     { name: 'report_cost.html', url: 'costreport'+'?plates='+$scope.plates},
-	     { name: 'none', url: 'translate'},
+	     { name: 'translate.html', url: 'translate'+'?plates='+$scope.plates},
 	     { name: 'test.html', url: 'test'}];
   $scope.template = $scope.templates[0];
   
@@ -21,6 +21,14 @@ app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
 	  $window.location.href='/websrv/home';
   };
     
+}]);
+
+
+//translate.html
+app.controller('TranslateCtrl', ['$scope', '$window', function($scope, $window) {
+	$scope.date = new Date();
+
+	    
 }]);
 
 

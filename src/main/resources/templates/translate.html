@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+    <link type="text/css" media="all" th:href="@{/css/eric.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/fontawesome.min.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"  rel="stylesheet"></link>
+    <link type="text/css" media="all" th:href="@{/css/templatemo-style.css}"  rel="stylesheet"></link>
+	
+	<script type="text/javascript" th:src="@{/js/angular.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/home.agl.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/moment.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>   
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tooplate-scripts.js}"></script>
+		
+
+  
+
+</head>
+<body>
+ <div class="row tm-content-row">
+ 	<div ng-app='homeapp' ng-controller="TranslateCtrl" class="col-12 tm-block-col">
+ 		<div class="form-style-5" th:each="plateset : ${param.plates}">
+			<form th:action="@{/home}"  method="get">
+				<fieldset>
+					<legend><span class="number">1</span> 轉換條件選擇</legend>
+					<select id="transout" name="transout" ng-model="plateout">
+						<option value="" disabled selected >選擇轉出平台</option>
+						<option th:value="${plate}" th:each="plate,plateStat : ${#strings.arraySplit(plateset, ',')}">
+						 [[${plate}]]
+						</option>
+					</select>
+					<select id="transin" name="transin" ng-model="platein">
+						<option value="" disabled selected >選擇轉入平台</option>
+						<option th:value="${plate}" th:each="plate,plateStat : ${#strings.arraySplit(plateset, ',')}">
+						 [[${plate}]]
+						</option>
+					</select>
+					<label style="color:red;" ng-show="(platein == plateout) && platein != null && plateout != null"> 轉出與轉入不能為相同平台</label>
+					<label >轉出數值:</label>
+					<input type="number" name="transval" id="transval" ng-model="ngtransval" placeholder="輸入轉換數值" required>
+					<label style="color:red;" ng-show="ngtransval == null"> 轉出值必須填寫</label>
+					<legend><span class="number">2</span> 轉換通知</legend>
+					<label for="job">備註:</label>
+					<textarea name="field3" >於{{date | date:'yyyy-MM-dd hh HH:mm:ss'}} ,您由[ {{plateout}} ]平台轉出[ {{ngtransval}}點 ]至[  {{platein}} ]平台 </textarea>
+					<label for="job">通知方式:</label>
+					<input type="email" name="field2" placeholder="電子信箱">     
+				</fieldset>
+
+				<input type="submit" value="送出" />
+			</form>
+		</div>  				
+	</div>
+</div>
+</body>
+</html>

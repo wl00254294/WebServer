@@ -68,16 +68,16 @@
                             </div>
                         </li>						
                         <li class="nav-item">
-                            <a ng-class="flag == 4 ? 'nav-link active' : 'nav-link'" ng-click="flag=4;directHome()" href="#">
+                            <a ng-class="flag == 4 ? 'nav-link active' : 'nav-link'" ng-click="flag=4;loadpage(flag)" href="#">
                                 <i class="fas fa-hand-holding-usd"></i>
                                 	轉換
                             </a>
                         </li>
 
                        <li class="nav-item">
-                            <a ng-class="flag == 5 ? 'nav-link active' : 'nav-link'" ng-click="flag=5;loadpage(flag)" href="#">
-                                <i class="far fa-user"></i>
-                                	用戶
+                            <a ng-class="flag == 5 ? 'nav-link active' : 'nav-link'" ng-click="flag=5;directHome()" href="#">
+                                <i class="fas fa-sync"></i>
+                                	重新整理
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -104,7 +104,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">	
                             <a class="nav-link d-block" href="logout">
-                                [[${username}]], <b>Logout</b>
+                                [[${username}]], <b>登出</b>
                             </a>
                         </li>
                     </ul>
@@ -115,7 +115,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <p class="text-white mt-5 mb-5">歡迎回來 , <b>[[${username}]]</b></p>
+                    <p class="mt-5 mb-5">歡迎回來 , <b>[[${username}]]</b></p>
                 </div>
             </div>
             <!-- row -->
