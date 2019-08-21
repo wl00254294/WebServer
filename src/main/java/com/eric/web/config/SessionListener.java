@@ -15,6 +15,7 @@ public class SessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent event) {
         logger.info("==== Session is created ====");
         event.getSession().setMaxInactiveInterval(15*60);
+        
     }
  
     @Override

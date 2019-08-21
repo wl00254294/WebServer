@@ -1,5 +1,6 @@
 package com.eric.web.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.eric.web.bo.Data;
 import com.eric.web.bo.MonthData;
 import com.eric.web.bo.NotifyInfo;
 import com.eric.web.bo.TranscationInfo;
+import com.eric.web.bo.User;
 import com.eric.web.bo.WeekData;
 import com.eric.web.method.JacksonUtil;
 import com.eric.web.method.RestClient;
@@ -37,20 +39,28 @@ public class LoginController {
     private String middleserver;
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+	public String test(HttpServletRequest request,Model model,HttpSession session
+			,HttpServletResponse response) throws Exception {
 		
 		RestClient cli=new RestClient();
 		JacksonUtil jt=new JacksonUtil();
 		
+		User user=new User();
+		user.setUsername("admin");
+		user.setPassword("admin");
+		
+		String token=cli.post(middleserver, "gettoken", jt.bean2Json(user));
+		Cookie rescookie = new Cookie("token", token);
+		 response.addCookie(rescookie);
 		//post method
-		Data data=new Data();
-		data.setRate("1.12");
-		data.setValue(200);		
-		String pdata=jt.bean2Json(data);		
-		String pout=cli.post(middleserver, "test", pdata);
+		//Data data=new Data();
+		//data.setRate("1.12");
+		//data.setValue(200);		
+		//String pdata=jt.bean2Json(data);		
+		//String pout=cli.post(middleserver, "test", pdata);
 		
 		
-		model.addAttribute("out", pout);
+		model.addAttribute("out", "dddd");
 		
 		return "test.html";
 	}
@@ -152,7 +162,16 @@ public class LoginController {
 	public String home(HttpServletRequest request,Model model,HttpSession session
 			,HttpServletResponse response) throws Exception {
 		logger.info("susses login to home page");
-		String username=(String) session.getAttribute("USERNAME");
+		
+		String a=request.getHeader("token");
+		response.setHeader("token", a);
+		
+		
+		//String username=(String) session.getAttribute("USERNAME");
+		//隨便輸入POST不影響(已用token驗證)
+		String username="admin";
+		
+		String token="";
 		RestClient cli=new RestClient();
 		JacksonUtil ju=new JacksonUtil();		
 		
@@ -167,6 +186,11 @@ public class LoginController {
     	            Cookie rescookie = new Cookie("AWSALB", cookieval);
     	            response.addCookie(rescookie);
     	        }
+    	        
+    	        if("token".equals(cookie.getName()))
+    	        {
+    	        	token=cookie.getValue();
+    	        }
     	      
     	    }
         }			
@@ -174,7 +198,7 @@ public class LoginController {
         //Get Cost Data
         
 		try {
-			String scostdata=cli.post(middleserver, "getCostData", username);
+			String scostdata=cli.post(middleserver, "getCostData?token="+token, username);
 		
 			List<CostData> costdata=ju.json2BeanList(scostdata,CostData.class );
 			if(costdata.size()>0)
@@ -200,7 +224,7 @@ public class LoginController {
 		
 		//test data for month report
 		try {
-			String smonthdata=cli.post(middleserver, "getMonthData", username);
+			String smonthdata=cli.post(middleserver, "getMonthData?token="+token, username);
 		
 			List<MonthData> monthdata=ju.json2BeanList(smonthdata,MonthData.class );
 		
@@ -214,7 +238,7 @@ public class LoginController {
 		//test data for week report
 
 		try {
-			String sweekdata=cli.post(middleserver, "getWeekData", username);
+			String sweekdata=cli.post(middleserver, "getWeekData?token="+token, username);
 		
 			List<WeekData> weekdata=ju.json2BeanList(sweekdata,WeekData.class );
 		
@@ -228,7 +252,7 @@ public class LoginController {
 		//Get Dashboard Data
 
 		try {
-			String repdata=cli.post(middleserver, "getTransInfo", username);
+			String repdata=cli.post(middleserver, "getTransInfo?token="+token, username);
 		
 			List<TranscationInfo> orders=ju.json2BeanList(repdata,TranscationInfo.class );
 		
@@ -240,7 +264,7 @@ public class LoginController {
 		
 		
 		try{
-			String repdata=cli.post(middleserver, "getNoteInfo", username);
+			String repdata=cli.post(middleserver, "getNoteInfo?token="+token, username);
 			List<NotifyInfo> notifys=ju.json2BeanList(repdata,NotifyInfo.class );
 			model.addAttribute("notifys", notifys);
 		}catch(Exception e)
@@ -259,7 +283,7 @@ public class LoginController {
 	@RequestMapping(value = "/translate", method = RequestMethod.GET)
 	public String translation(HttpServletRequest request,Model model,HttpSession session
 			,HttpServletResponse response) {		    
-		String username=(String) session.getAttribute("USERNAME");
+		//String username=(String) session.getAttribute("USERNAME");
 		
 	 	String cookieval="";
 		Cookie[] cookies = request.getCookies();
@@ -293,30 +317,29 @@ public class LoginController {
 	public ModelAndView loginact(HttpServletRequest request,ModelAndView model, HttpSession session,
 			HttpServletResponse response,
 			@RequestParam("username") String username,
-			@RequestParam("password") String password) {
-		   
-		if(("admin".equals(username) || "eric".equals(username)) && "admin".equals(password))
-		{
-			session.setAttribute("USERNAME",username);
+			@RequestParam("password") String password) throws IOException {
+		
+		
+		  RestClient cli=new RestClient();
+		  JacksonUtil jt=new JacksonUtil();
+			  
+		  
+		  if(!"".equals(username)||!"".equals(password))
+		  {
 			
-		 	String cookieval="";
-  		 	Cookie[] cookies = request.getCookies();
-            if(cookies != null) {
-        	    for(Cookie cookie : cookies) {
-        	    	//get AWS Application Load Balance Cookie(Stick session)
-        	        if("AWSALB".equals(cookie.getName()))
-        	        {
-        	        	cookieval = cookie.getValue();
-        	            Cookie rescookie = new Cookie("AWSALB", cookieval);
-        	            response.addCookie(rescookie);
-        	        }
-        	      
-        	    }
-            }			
-            
-            model.setViewName("redirect:/home");
-			return model;
-		}
+				User user=new User();
+				user.setUsername(username);
+				user.setPassword(password);
+				
+				String token=cli.post(middleserver, "gettoken", jt.bean2Json(user));
+				Cookie rescookie = new Cookie("token", token);
+				response.addCookie(rescookie);
+				
+				model.setViewName("redirect:/home");
+				return model;
+				
+		  }
+	
 
 		  model.setViewName("redirect:/login?error");
 	      return model;
@@ -324,9 +347,21 @@ public class LoginController {
 	
 	
 	@RequestMapping(value = "/logout")
-    public String logout(HttpSession session,HttpServletRequest request){
+    public String logout(HttpSession session,HttpServletRequest request,HttpServletResponse response){
         session.invalidate();
-      
+        
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/websrv");
+                    response.addCookie(cookie);
+                }
+
+            }
+        }
         return "redirect:login?logout";
     }
 }

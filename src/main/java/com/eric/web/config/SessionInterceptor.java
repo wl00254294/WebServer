@@ -1,5 +1,6 @@
 package com.eric.web.config;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,19 +21,27 @@ public class SessionInterceptor implements HandlerInterceptor{
 	    public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
 		 	logger.info("=====start session preHandle!");
 		    String uri = request.getRequestURI();
-	        HttpSession session = request.getSession();
-	        String username=(String) session.getAttribute("USERNAME");
+	       // HttpSession session = request.getSession();
+		    String token="";
 	        if (uri.endsWith("/login") || uri.endsWith("/loginact")||
 	        		uri.endsWith("/register")||uri.endsWith("/registeract")) {
 	            return true;
 	        }
-        	
-	       if ( username != null )
-	        {
-	    	   
- 	        
-        		return true;
+	        
+	        Cookie[] cookies = request.getCookies();
+	        if(cookies != null) {
+	        	 for(Cookie cookie : cookies) {
+	        		 if("token".equals(cookie.getName()))
+	        		 {
+	        			 token=cookie.getValue();
+	        			 if(!"".equals(token))
+	        			 {
+	        			 	return true;
+	        			 }
+	        		 }
+	        	 }	        	
 	        }
+	        
 	       
 	       response.sendRedirect("login");
    		 
